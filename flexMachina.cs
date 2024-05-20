@@ -25,10 +25,10 @@ public class fProfile
         }
         BoundObject = playerObject;
         BoundObject.Profile = this;
-        CurrentActionMap = _Asset.FindActionMap(playerObject.ActionMapName);
+        Type type = playerObject.InputInterface;
+        CurrentActionMap = _Asset.FindActionMap(type.Name);
         User.AssociateActionsWithUser(CurrentActionMap);//will internally replace existing
         User.ActivateControlScheme(_ControlSchemeDevice);
-        Type type = playerObject.InputInterface;
         foreach (var mi in type.GetMethods())
         {
             string actionName = mi.Name.Substring(2);//remove the "On"
@@ -48,7 +48,6 @@ public class fProfile
 }
 public interface fPlayerObject
 {
-    public string ActionMapName { get; }
     public Type InputInterface { get; }
     InputDevice Device { get; set; }
     fProfile Profile { get; set; }

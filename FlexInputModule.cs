@@ -14,7 +14,6 @@ public class FlexInputModule : BaseInputModule, fPlayerObject, NewControls.IMenu
     Transform _Root;
     Selectable _CurrentSelected;
     public InputDevice Device { get; set; }
-    public string ActionMapName => "Menu";
     public fProfile Profile { get; set; }
     public Type InputInterface => typeof(NewControls.IMenuActions);
     protected override void OnDestroy()
