@@ -16,31 +16,36 @@ public class fProfile
         _Asset = UnityEngine.Object.Instantiate(asset);
         _ControlSchemeDevice = controlSchemeDevice;
     }
+    public void UnBindObject()
+    {
+        BoundObject.Profile = null;
+        BoundObject = null;
+        foreach (InputAction action in CurrentActionMap)
+            action.Reset();
+        CurrentActionMap.Disable();
+    }
     public void BindObject<T>(T playerObject) where T : fPlayerObject
     {
-        if(BoundObject!=null)
-        {
-            BoundObject.Profile = null;
-            BoundObject = null;
-        }
+        if (BoundObject != null)
+            UnBindObject();
         BoundObject = playerObject;
         BoundObject.Profile = this;
         Type type = playerObject.InputInterface;
-        CurrentActionMap = _Asset.FindActionMap(type.Name);
+        string actionMapName = type.Name.Replace("Actions", string.Empty);
+        actionMapName = actionMapName.Substring(1);//remove the 'I'
+        CurrentActionMap = _Asset.FindActionMap(actionMapName);
         User.AssociateActionsWithUser(CurrentActionMap);//will internally replace existing
         User.ActivateControlScheme(_ControlSchemeDevice);
         foreach (var mi in type.GetMethods())
         {
             string actionName = mi.Name.Substring(2);//remove the "On"
             InputAction action = CurrentActionMap.FindAction(actionName);
-            if (action != null)
-            {
-                Action<InputAction.CallbackContext> d = (Action<InputAction.CallbackContext>)mi.CreateDelegate(typeof(Action<InputAction.CallbackContext>), playerObject);
-                action.Reset();//clear the preexisting bindings
-                action.started += d;
-                action.performed += d;
-                action.canceled += d;
-            }
+            Action<InputAction.CallbackContext> d = 
+                (Action<InputAction.CallbackContext>)mi.CreateDelegate(typeof(Action<InputAction.CallbackContext>), playerObject);
+            action.Reset();//clear the preexisting bindings
+            action.started += d;
+            action.performed += d;
+            action.canceled += d;
         }
         CurrentActionMap.Enable();
         BoundObject.OnBind();
@@ -49,7 +54,6 @@ public class fProfile
 public interface fPlayerObject
 {
     public Type InputInterface { get; }
-    InputDevice Device { get; set; }
     fProfile Profile { get; set; }
     void OnBind();
 }

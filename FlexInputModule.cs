@@ -13,7 +13,6 @@ public class FlexInputModule : BaseInputModule, fPlayerObject, NewControls.IMenu
     Selectable _SelectFirst;
     Transform _Root;
     Selectable _CurrentSelected;
-    public InputDevice Device { get; set; }
     public fProfile Profile { get; set; }
     public Type InputInterface => typeof(NewControls.IMenuActions);
     protected override void OnDestroy()
