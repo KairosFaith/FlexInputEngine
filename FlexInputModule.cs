@@ -18,7 +18,7 @@ public class FlexInputModule : BaseInputModule, fPlayerObject, NewControls.IMenu
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        Profile.CurrentActionMap.Disable();
+        Profile.UnBindObject();
     }
     public void OnNavigate(InputAction.CallbackContext context)
     {
