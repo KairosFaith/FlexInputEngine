@@ -1,7 +1,8 @@
 using System;
+using System.Reflection;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
-public class fProfile
+public abstract class fProfile
 {
     public InputDevice GamepadDevice;
     public InputUser User;
@@ -36,7 +37,8 @@ public class fProfile
         CurrentActionMap = _Asset.FindActionMap(actionMapName);
         User.AssociateActionsWithUser(CurrentActionMap);//will internally replace existing
         User.ActivateControlScheme(_ControlSchemeDevice);
-        foreach (var mi in type.GetMethods())
+        MethodInfo[] methods = type.GetMethods();
+        foreach (MethodInfo mi in methods)
         {
             string actionName = mi.Name.Substring(2);//remove the "On"
             InputAction action = CurrentActionMap.FindAction(actionName);

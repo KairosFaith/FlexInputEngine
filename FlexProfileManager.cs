@@ -5,7 +5,7 @@ public class FlexProfileManager : MonoBehaviour
 {
     const int _playerCapacity = 2;
     public InputActionAsset InputAsset;
-    public List<fProfile> PlayerProfiles = new List<fProfile>();
+    public List<ExPlayerProfile> PlayerProfiles = new List<ExPlayerProfile>();
     public static FlexProfileManager Instance;
     private void Awake()
     {
@@ -34,7 +34,7 @@ public class FlexProfileManager : MonoBehaviour
         ExPlayerProfile profile = null;
         foreach (var p in PlayerProfiles)
             if (p.GamepadDevice == device)
-                profile = (ExPlayerProfile)p;
+                profile = p;
         if (profile == null)
         {
             key = -1;
@@ -42,7 +42,7 @@ public class FlexProfileManager : MonoBehaviour
                 return null;
             else
             {
-                profile = new(device, InputAsset, nameof(Gamepad));
+                profile = new ExPlayerProfile(device, InputAsset, nameof(Gamepad));
                 PlayerProfiles.Add(profile);
             }
         }
