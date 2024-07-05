@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class ExSimpleMultiMenu : MonoBehaviour
 {
     public bool AllowNewPlayers;
-    public List<FlexInputModule> UIModules;
+    public List<fPlayerObject> PlayerObjects;
     void Start()
     {
         //clear player profiles
@@ -22,7 +22,9 @@ public class ExSimpleMultiMenu : MonoBehaviour
         //register player profiles with PlayerProfileManager
         fProfile profile = FlexProfileManager.Instance.AddProfile(pad, out int key);
         //activate menu for each player profile
-        FlexInputModule playerObject = UIModules[key];
+        if (profile == null)
+            return;
+        fPlayerObject playerObject = PlayerObjects[key];
         profile.BindObject(playerObject);
     }
     //allow new players to join

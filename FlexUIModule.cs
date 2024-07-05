@@ -3,26 +3,19 @@ using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.InputSystem.UI;
-using System;
-public class FlexInputModule : BaseInputModule, fPlayerObject, NewControls.IMenuActions
+//using System;
+public class FlexUIModule : BaseInputModule
 {
     public override void Process()
     {
         //what does this even do?????
+
+        //TODO this function is supposed to process their pointer stuff
     }
-    Selectable _SelectFirst;
     Transform _Root;
     Selectable _CurrentSelected;
-    public fProfile Profile { get; set; }
-    public Type InputInterface => typeof(NewControls.IMenuActions);
-    protected override void OnDestroy()
+    public void Navigate(Vector2 move)
     {
-        base.OnDestroy();
-        Profile.UnBindObject();
-    }
-    public void OnNavigate(InputAction.CallbackContext context)
-    {
-        Vector2 move = context.ReadValue<Vector2>();
         Selectable s = _CurrentSelected.FindSelectable(move);
         //if(s != null)
             SelectNext(s);
@@ -35,20 +28,21 @@ public class FlexInputModule : BaseInputModule, fPlayerObject, NewControls.IMenu
             _CurrentSelected = s;
         }
     }
-    public void OnSubmit(InputAction.CallbackContext context)
+    public void Submit()
     {
-        if (_CurrentSelected != null)
-        {
+        //if (_CurrentSelected != null)
             ExecuteEvents.Execute(_CurrentSelected.gameObject, new BaseEventData(eventSystem), ExecuteEvents.submitHandler);
-        }
     }
     public void OnBind()
     {
+        Selectable _SelectFirst = null;
         if (eventSystem is MultiplayerEventSystem m)
         {
             _Root = m.playerRoot.transform;
             _SelectFirst = m.firstSelectedGameObject.GetComponent<Selectable>();
         }
+        else
+            throw new System.Exception("Need" + nameof(MultiplayerEventSystem));
         _Root.gameObject.SetActive(true);
         SelectNext(_SelectFirst);
     }
