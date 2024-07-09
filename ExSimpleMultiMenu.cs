@@ -30,14 +30,12 @@ public class ExSimpleMultiMenu : MonoBehaviour
     //allow new players to join
     void onDeviceChange(InputDevice device, InputDeviceChange change)
     {
-        if (device is Gamepad gamepad)
-        {
             switch (change)
             {
                 case InputDeviceChange.Added:
+                if (device is Gamepad gamepad)
                     AddProfile(gamepad);
-                    break;
+                break;
             }
-        }
     }
 }
