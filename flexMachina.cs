@@ -17,13 +17,20 @@ public abstract class fProfile
         _Asset = UnityEngine.Object.Instantiate(asset);
         _ControlSchemeDevice = controlSchemeDevice;
     }
+    public void EnableInput(bool active)
+    {
+        if (active)
+            CurrentActionMap.Enable();
+        else
+            CurrentActionMap.Disable();
+    }
     public void UnBindObject()
     {
         BoundObject.Profile = null;
         BoundObject = null;
         foreach (InputAction action in CurrentActionMap)
             action.Reset();
-        CurrentActionMap.Disable();
+        EnableInput(false);
     }
     public void BindObject<T>(T playerObject) where T : fPlayerObject
     {
@@ -49,7 +56,7 @@ public abstract class fProfile
             action.performed += d;
             action.canceled += d;
         }
-        CurrentActionMap.Enable();
+        EnableInput(true);
         BoundObject.OnBind();
     }
 }
