@@ -7,6 +7,7 @@ public abstract class fProfile
     public InputDevice GamepadDevice;
     public InputUser User;
     public InputActionMap CurrentActionMap;
+    Action _ResetActions;
     InputActionAsset _Asset;
     public fPlayerObject BoundObject;
     string _ControlSchemeDevice;
@@ -26,10 +27,10 @@ public abstract class fProfile
     }
     public void UnBindObject()
     {
+        _ResetActions?.Invoke();
+        _ResetActions = null;
         BoundObject.Profile = null;
         BoundObject = null;
-        foreach (InputAction action in CurrentActionMap)
-            action.Reset();
         EnableInput(false);
     }
     public void BindObject<T>(T playerObject) where T : fPlayerObject
@@ -51,10 +52,15 @@ public abstract class fProfile
             InputAction action = CurrentActionMap.FindAction(actionName);
             Action<InputAction.CallbackContext> d = 
                 (Action<InputAction.CallbackContext>)mi.CreateDelegate(typeof(Action<InputAction.CallbackContext>), playerObject);
-            action.Reset();//clear the preexisting bindings
             action.started += d;
             action.performed += d;
             action.canceled += d;
+            _ResetActions += () =>
+            {
+                action.started -= d;
+                action.performed -= d;
+                action.canceled -= d;
+            };
         }
         EnableInput(true);
         BoundObject.OnBind();
