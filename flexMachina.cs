@@ -27,11 +27,11 @@ public abstract class fProfile
     }
     public void UnBindObject()
     {
+        EnableInput(false);
         _ResetActions?.Invoke();
         _ResetActions = null;
         BoundObject.Profile = null;
         BoundObject = null;
-        EnableInput(false);
     }
     public void BindObject<T>(T playerObject) where T : fPlayerObject
     {
@@ -60,6 +60,7 @@ public abstract class fProfile
                 action.started -= d;
                 action.performed -= d;
                 action.canceled -= d;
+                //playerObject.OnUnBind();
             };
         }
         EnableInput(true);
@@ -71,4 +72,5 @@ public interface fPlayerObject
     public Type InputInterface { get; }
     fProfile Profile { get; set; }
     void OnBind();
+    //void OnUnBind();
 }
