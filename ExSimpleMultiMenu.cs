@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
-using System.Collections;
 using System.Collections.Generic;
 public class ExSimpleMultiMenu : MonoBehaviour
 {

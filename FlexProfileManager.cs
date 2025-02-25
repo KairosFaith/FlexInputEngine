@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class FlexProfileManager : MonoBehaviour
 {
-    const int _playerCapacity = 2;
+    public int PlayerCapacity = 2;
     public InputActionAsset InputAsset;
     public List<ExPlayerProfile> PlayerProfiles = new List<ExPlayerProfile>();
     public static FlexProfileManager Instance;
@@ -37,9 +37,11 @@ public class FlexProfileManager : MonoBehaviour
                 profile = p;
         if (profile == null)
         {
-            key = -1;
-            if (PlayerProfiles.Count >= _playerCapacity)
+            if (PlayerProfiles.Count >= PlayerCapacity)
+            {
+                key = -1;
                 return null;
+            }
             else
             {
                 profile = new ExPlayerProfile(device, InputAsset, nameof(Gamepad));
@@ -52,7 +54,7 @@ public class FlexProfileManager : MonoBehaviour
 }
 public class ExPlayerProfile : fProfile//Project specific, add any variables you need
 {
-    public string ChosenCharacter;
+    public string PlayerName;
     public ExPlayerProfile(InputDevice device, InputActionAsset asset, string controlSchemeDevice) 
         : base(device, asset, controlSchemeDevice) { }
 }
