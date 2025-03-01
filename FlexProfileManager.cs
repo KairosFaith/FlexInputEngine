@@ -37,15 +37,15 @@ public class FlexProfileManager : MonoBehaviour
                 profile = p;
         if (profile == null)
         {
-            if (PlayerProfiles.Count >= PlayerCapacity)
-            {
-                key = -1;
-                return null;
-            }
-            else
+            if (PlayerProfiles.Count < PlayerCapacity)
             {
                 profile = new ExPlayerProfile(device, InputAsset, nameof(Gamepad));
                 PlayerProfiles.Add(profile);
+            }
+            else
+            {
+                key = -1;
+                return null;
             }
         }
         key = PlayerProfiles.IndexOf(profile);

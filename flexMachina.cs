@@ -38,7 +38,7 @@ public abstract class fProfile
         if (BoundObject != null)
             UnBindObject();
         BoundObject = playerObject;
-        BoundObject.Profile = this;
+        BoundObject.Profile = (ExPlayerProfile)this;
         Type type = playerObject.InputInterface;
         string actionMapName = type.Name.Replace("Actions", string.Empty);
         actionMapName = actionMapName.Substring(1);//remove the 'I'
@@ -70,7 +70,7 @@ public abstract class fProfile
 public interface fPlayerObject
 {
     public Type InputInterface { get; }
-    fProfile Profile { get; set; }
+    ExPlayerProfile Profile { get; set; }
     void OnBind();
     //void OnUnBind();
 }
