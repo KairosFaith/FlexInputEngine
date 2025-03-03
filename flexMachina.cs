@@ -40,15 +40,14 @@ public abstract class fProfile
         BoundObject = playerObject;
         BoundObject.Profile = (ExPlayerProfile)this;
         Type type = playerObject.InputInterface;
-        string actionMapName = type.Name.Replace("Actions", string.Empty);
-        actionMapName = actionMapName.Substring(1);//remove the 'I'
+        string actionMapName = type.Name[1..^7];//$"I{actionMapName}Action";
         CurrentActionMap = _Asset.FindActionMap(actionMapName);
         User.AssociateActionsWithUser(CurrentActionMap);//will internally replace existing
         User.ActivateControlScheme(_ControlSchemeDevice);
         MethodInfo[] methods = type.GetMethods();
         foreach (MethodInfo mi in methods)
         {
-            string actionName = mi.Name.Substring(2);//remove the "On"
+            string actionName = mi.Name[2..];//remove the "On"
             InputAction action = CurrentActionMap.FindAction(actionName);
             Action<InputAction.CallbackContext> d = 
                 (Action<InputAction.CallbackContext>)mi.CreateDelegate(typeof(Action<InputAction.CallbackContext>), playerObject);
