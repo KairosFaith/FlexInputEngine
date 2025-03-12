@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
-public class fQuickPlay : MonoBehaviour//what PlayerInput was supposed to be
+public class fSharedInput : MonoBehaviour//use for single player
 {
     public InputActionAsset ControlAsset;
     public string ActionMap;

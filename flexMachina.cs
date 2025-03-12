@@ -2,6 +2,14 @@ using System;
 using System.Reflection;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
+//Must name "Gamepad" as control scheme in the InputActionAsset
+public interface fPlayerObject//Each player object must implement this interface
+{
+    public Type InputInterface { get; }
+    ExPlayerProfile Profile { get; set; }
+    void OnBind();
+    //void OnUnBind();
+}
 public abstract class fProfile
 {
     public InputDevice GamepadDevice;
@@ -31,6 +39,7 @@ public abstract class fProfile
         _ResetActions?.Invoke();
         _ResetActions = null;
         BoundObject.Profile = null;
+        //BoundObject.OnUnBind();
         BoundObject = null;
     }
     public void BindObject<T>(T playerObject) where T : fPlayerObject
@@ -59,17 +68,9 @@ public abstract class fProfile
                 action.started -= d;
                 action.performed -= d;
                 action.canceled -= d;
-                //playerObject.OnUnBind();
             };
         }
         EnableInput(true);
         BoundObject.OnBind();
     }
-}
-public interface fPlayerObject
-{
-    public Type InputInterface { get; }
-    ExPlayerProfile Profile { get; set; }
-    void OnBind();
-    //void OnUnBind();
 }

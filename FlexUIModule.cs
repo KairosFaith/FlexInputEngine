@@ -1,9 +1,8 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.InputSystem.UI;
-//using System;
+[RequireComponent(typeof(MultiplayerEventSystem))]
 public class FlexUIModule : BaseInputModule
 {
     public override void Process()
@@ -17,12 +16,12 @@ public class FlexUIModule : BaseInputModule
     public void Navigate(Vector2 move)
     {
         Selectable s = _CurrentSelected.FindSelectable(move);
-        //if(s != null)
+        if(s != null)
             SelectNext(s);
     }
     public void SelectNext(Selectable s)
     {
-        if (s != null && s.transform.IsChildOf(_Root))
+        if (s.transform.IsChildOf(_Root))
         {
             eventSystem.SetSelectedGameObject(s.gameObject);
             _CurrentSelected = s;
@@ -35,15 +34,13 @@ public class FlexUIModule : BaseInputModule
     }
     public void OnBind()
     {
-        Selectable _SelectFirst = null;
         if (eventSystem is MultiplayerEventSystem m)
         {
             _Root = m.playerRoot.transform;
-            _SelectFirst = m.firstSelectedGameObject.GetComponent<Selectable>();
+            Selectable _SelectFirst = m.firstSelectedGameObject.GetComponent<Selectable>();
+            SelectNext(_SelectFirst);
         }
         else
-            throw new System.Exception("Need" + nameof(MultiplayerEventSystem));
-        _Root.gameObject.SetActive(true);
-        SelectNext(_SelectFirst);
+            throw new System.Exception("Need " + nameof(MultiplayerEventSystem));
     }
 }
