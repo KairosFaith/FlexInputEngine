@@ -3,6 +3,7 @@ using System.Reflection;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
 //Must name "Gamepad" as control scheme in the InputActionAsset
+//System is designed for Gamepad only
 public interface fPlayerObject//Each player object must implement this interface
 {
     public Type InputInterface { get; }
@@ -12,26 +13,24 @@ public interface fPlayerObject//Each player object must implement this interface
 }
 public abstract class fProfile
 {
-    public InputDevice GamepadDevice;
-    public InputUser User;
-    public InputActionMap CurrentActionMap;
+    public Gamepad GamepadDevice;
+    public fPlayerObject BoundObject;
+    InputUser _User;
+    InputActionMap _CurrentActionMap;
     Action _ResetActions;
     InputActionAsset _Asset;
-    public fPlayerObject BoundObject;
-    string _ControlSchemeDevice;
-    public fProfile(InputDevice device, InputActionAsset asset, string controlSchemeDevice)
+    public fProfile(Gamepad device, InputActionAsset asset)
     {
-        User = InputUser.PerformPairingWithDevice(device);
+        _User = InputUser.PerformPairingWithDevice(device);
         GamepadDevice = device;
         _Asset = UnityEngine.Object.Instantiate(asset);
-        _ControlSchemeDevice = controlSchemeDevice;
     }
     public void EnableInput(bool active)
     {
         if (active)
-            CurrentActionMap.Enable();
+            _CurrentActionMap.Enable();
         else
-            CurrentActionMap.Disable();
+            _CurrentActionMap.Disable();
     }
     public void UnBindObject()
     {
@@ -49,15 +48,15 @@ public abstract class fProfile
         BoundObject = playerObject;
         BoundObject.Profile = (ExPlayerProfile)this;
         Type type = playerObject.InputInterface;
-        string actionMapName = type.Name[1..^7];//$"I{actionMapName}Action";
-        CurrentActionMap = _Asset.FindActionMap(actionMapName);
-        User.AssociateActionsWithUser(CurrentActionMap);//will internally replace existing
-        User.ActivateControlScheme(_ControlSchemeDevice);
+        string actionMapName = type.Name[1..^7];//$"I{actionMapName}Action"
+        _CurrentActionMap = _Asset.FindActionMap(actionMapName);
+        _User.AssociateActionsWithUser(_CurrentActionMap);//will internally replace existing
+        _User.ActivateControlScheme(nameof(Gamepad));
         MethodInfo[] methods = type.GetMethods();
         foreach (MethodInfo mi in methods)
         {
-            string actionName = mi.Name[2..];//remove the "On"
-            InputAction action = CurrentActionMap.FindAction(actionName);
+            string actionName = mi.Name[2..];//$"On{actionName}"
+            InputAction action = _CurrentActionMap.FindAction(actionName);
             Action<InputAction.CallbackContext> d = 
                 (Action<InputAction.CallbackContext>)mi.CreateDelegate(typeof(Action<InputAction.CallbackContext>), playerObject);
             action.started += d;

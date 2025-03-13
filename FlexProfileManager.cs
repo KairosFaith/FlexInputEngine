@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 //Must name "Gamepad" as control scheme in the InputActionAsset
+//System is designed for Gamepad only
 public class FlexProfileManager : MonoBehaviour
 {
     public int PlayerCapacity = 2;
@@ -40,7 +41,7 @@ public class FlexProfileManager : MonoBehaviour
         {
             if (PlayerProfiles.Count < PlayerCapacity)
             {
-                profile = new ExPlayerProfile(device, InputAsset, nameof(Gamepad));
+                profile = new ExPlayerProfile(device, InputAsset);
                 PlayerProfiles.Add(profile);
             }
             else
@@ -57,6 +58,5 @@ public class ExPlayerProfile : fProfile
 {
     public string PlayerName;
     //Add any additional player specific data here
-    public ExPlayerProfile(InputDevice device, InputActionAsset asset, string controlSchemeDevice) 
-        : base(device, asset, controlSchemeDevice) { }
+    public ExPlayerProfile(Gamepad device, InputActionAsset asset) : base(device, asset) { }
 }
