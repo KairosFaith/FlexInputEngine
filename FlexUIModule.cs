@@ -7,18 +7,12 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(MultiplayerEventSystem))]
 public class FlexUIModule : BaseInputModule
 {
-    Transform _Root;
     public Transform RootTransform
     {
         get
         {
-            if(_Root!=null)
-                return _Root;
-            else if (eventSystem is MultiplayerEventSystem m)
-            {
-                _Root = m.playerRoot.transform;
-                return _Root;
-            }
+            if (eventSystem is MultiplayerEventSystem m)
+                return m.playerRoot.transform;
             else
                 throw new System.Exception("Need " + nameof(MultiplayerEventSystem));
         }
