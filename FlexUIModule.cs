@@ -44,8 +44,6 @@ public class FlexUIModule : BaseInputModule
     }
     public override void Process()
     {
-        //what does this even do?????
-
-        //TODO this function is supposed to process their pointer stuff
+        Debug.Log($"I wonder what {nameof(BaseInputModule)}.{nameof(BaseInputModule.Process)} does");
     }
 }

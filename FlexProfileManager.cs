@@ -27,9 +27,10 @@ public class FlexProfileManager : MonoBehaviour
         if (Instance == this)
             Instance = null;
     }
-    public void ClearProfiles()
+    public void ClearAllBindings()
     {
-        PlayerProfiles.Clear();
+        foreach (var p in PlayerProfiles)
+            p.UnBindObject();
     }
     public ExPlayerProfile AddProfile(Gamepad device, out int key)
     {
