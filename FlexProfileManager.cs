@@ -8,7 +8,7 @@ public class FlexProfileManager : MonoBehaviour
     public int PlayerCapacity = 2;
     public InputActionAsset InputAsset;
     public List<ExPlayerProfile> PlayerProfiles = new List<ExPlayerProfile>();
-    public static FlexProfileManager Instance;
+    public static FlexProfileManager Instance { get; private set; }
     private void Awake()
     {
         if (Instance == null)
@@ -17,10 +17,7 @@ public class FlexProfileManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else
-        {
-            Debug.LogWarning(Instance.gameObject.name + nameof(FlexProfileManager)+ " Already exists");
-            Destroy(this);
-        }
+            throw new System.NotImplementedException(Instance.gameObject.name + nameof(FlexProfileManager)+ " Already exists");
     }
     private void OnDestroy()
     {
