@@ -17,7 +17,7 @@ public class FlexProfileManager : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else
-            throw new System.NotImplementedException(Instance.gameObject.name + nameof(FlexProfileManager)+ " Already exists");
+            Destroy(gameObject);
     }
     private void OnDestroy()
     {
