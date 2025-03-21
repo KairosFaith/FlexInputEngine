@@ -9,7 +9,7 @@ public class FlexProfileManager : MonoBehaviour
     public InputActionAsset InputAsset;
     public List<ExPlayerProfile> PlayerProfiles = new List<ExPlayerProfile>();
     public static FlexProfileManager Instance { get; private set; }
-    private void Awake()
+    void Awake()
     {
         if (Instance == null)
         {
@@ -19,20 +19,29 @@ public class FlexProfileManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
-    private void OnDestroy()
+    void OnDestroy()
     {
         if (Instance == this)
             Instance = null;
     }
+    /// <summary>
+    /// returns true if there are still available player slots
+    /// </summary>
+    public bool AddExistingGamepads()
+    {
+        foreach (Gamepad device in Gamepad.all)
+            AddProfile(device, out _);
+        return PlayerProfiles.Count < PlayerCapacity;
+    }
     public void ClearAllBindings()
     {
-        foreach (var p in PlayerProfiles)
+        foreach (ExPlayerProfile p in PlayerProfiles)
             p.UnBindObject();
     }
     public ExPlayerProfile AddProfile(Gamepad device, out int key)
     {
         ExPlayerProfile profile = null;
-        foreach (var p in PlayerProfiles)
+        foreach (ExPlayerProfile p in PlayerProfiles)
             if (p.GamepadDevice == device)
                 profile = p;
         if (profile == null)
