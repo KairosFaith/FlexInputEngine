@@ -1,8 +1,8 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Utilities;
-public class fSharedInput : MonoBehaviour//use for single player
+/// <summary>For single player game or shared player object, supports all <see cref="InputDevice"/> bindings in <see cref="InputActionAsset"/></summary>
+public class fSharedInput : MonoBehaviour
 {
     public InputActionAsset ControlAsset;
     public string ActionMap;
@@ -11,8 +11,7 @@ public class fSharedInput : MonoBehaviour//use for single player
     void Start()
     {
         _Map = ControlAsset.FindActionMap(ActionMap);
-        ReadOnlyArray<InputAction> actions = _Map.actions;
-        foreach (InputAction a in actions)
+        foreach (InputAction a in _Map.actions)
         {
             string functionName = "On" + a.name;
             void d(InputAction.CallbackContext ctx) => SendMessage(functionName, ctx, SendMessageOptions.RequireReceiver);

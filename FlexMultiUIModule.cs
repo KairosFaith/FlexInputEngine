@@ -3,9 +3,9 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem;
-//only use control functions here, no additional support for pointers or anything else
+///<summary>For UI Menu exclusive to each player, Gamepad only, use <see cref="FlexCursorInputModule"/> to add cursor support</summary>
 [RequireComponent(typeof(MultiplayerEventSystem))]
-public class FlexUIModule : BaseInputModule
+public class FlexMultiUIModule : BaseInputModule
 {
     public Transform RootTransform
     {

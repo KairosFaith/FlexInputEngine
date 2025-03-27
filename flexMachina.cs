@@ -4,7 +4,10 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Users;
 //Must name "Gamepad" as control scheme in the InputActionAsset
 //System is designed for Gamepad only
-public interface fPlayerObject//Each player object must implement this interface
+/// <summary>
+/// Each player object must implement this interface
+/// </summary>
+public interface fPlayerObject
 {
     public Type InputInterface { get; }
     ExPlayerProfile Profile { get; set; }

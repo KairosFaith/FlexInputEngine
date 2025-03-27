@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-//Must name "Gamepad" as control scheme in the InputActionAsset
-//System is designed for Gamepad only
+/// <summary>
+///Must name "Gamepad" as control scheme in the InputActionAsset.
+///System is designed for Gamepad only
+/// </summary>
 public class FlexProfileManager : MonoBehaviour
 {
     public int PlayerCapacity = 2;
@@ -61,6 +63,7 @@ public class FlexProfileManager : MonoBehaviour
         return profile;
     }
 }
+//Feel free to rename this class to match your project
 public class ExPlayerProfile : fProfile
 {
     public string PlayerName;
