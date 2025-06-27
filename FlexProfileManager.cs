@@ -32,7 +32,7 @@ public class FlexProfileManager : MonoBehaviour
     public bool AddExistingGamepads()
     {
         foreach (Gamepad device in Gamepad.all)
-            AddProfile(device, out _);
+            AddProfile(device);
         return PlayerProfiles.Count < PlayerCapacity;
     }
     public void ClearAllBindings()
@@ -40,26 +40,17 @@ public class FlexProfileManager : MonoBehaviour
         foreach (ExPlayerProfile p in PlayerProfiles)
             p.UnBindObject();
     }
-    public ExPlayerProfile AddProfile(Gamepad device, out int key)
+    public ExPlayerProfile AddProfile(Gamepad device)
     {
         ExPlayerProfile profile = null;
         foreach (ExPlayerProfile p in PlayerProfiles)
             if (p.GamepadDevice == device)
                 profile = p;
-        if (profile == null)
+        if (profile == null && PlayerProfiles.Count < PlayerCapacity)
         {
-            if (PlayerProfiles.Count < PlayerCapacity)
-            {
-                profile = new ExPlayerProfile(device, InputAsset);
-                PlayerProfiles.Add(profile);
-            }
-            else
-            {
-                key = -1;
-                return null;
-            }
+            profile = new ExPlayerProfile(device, InputAsset);
+            PlayerProfiles.Add(profile);
         }
-        key = PlayerProfiles.IndexOf(profile);
         return profile;
     }
 }
@@ -69,4 +60,5 @@ public class ExPlayerProfile : fProfile
     public string PlayerName;
     //Add any additional player specific data here
     public ExPlayerProfile(Gamepad device, InputActionAsset asset) : base(device, asset) { }
+    public int CurrentIndex => FlexProfileManager.Instance.PlayerProfiles.IndexOf(this);
 }
