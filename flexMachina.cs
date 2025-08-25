@@ -33,16 +33,13 @@ public abstract class fProfile
         if (active)
             _CurrentActionMap.Enable();
         else
-            _CurrentActionMap.Disable();
+            _CurrentActionMap?.Disable();
     }
     public void UnBindObject()
     {
         EnableInput(false);
         _ResetActions?.Invoke();
         _ResetActions = null;
-        BoundObject.Profile = null;
-        //BoundObject.OnUnBind();
-        BoundObject = null;
     }
     public void BindObject<T>(T playerObject) where T : fPlayerObject
     {
@@ -74,5 +71,11 @@ public abstract class fProfile
         }
         EnableInput(true);
         BoundObject.OnBind();
+        _ResetActions += () =>
+        {
+            BoundObject.Profile = null;
+            //BoundObject.OnUnBind();
+            BoundObject = null;
+        };
     }
 }
