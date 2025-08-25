@@ -53,6 +53,17 @@ public class FlexProfileManager : MonoBehaviour
         }
         return profile;
     }
+    public void RemoveProfile(Gamepad device)
+    {
+        foreach (ExPlayerProfile p in PlayerProfiles)
+            if (p.GamepadDevice == device)
+                RemoveProfile(p);
+    }
+    public void RemoveProfile(ExPlayerProfile profile)
+    {
+        profile.UnBindObject();
+        PlayerProfiles.Remove(profile);
+    }
 }
 //Feel free to rename this class to match your project
 public class ExPlayerProfile : fProfile
