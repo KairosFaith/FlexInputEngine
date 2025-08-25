@@ -11,8 +11,7 @@ public interface fPlayerObject
 {
     public Type InputInterface { get; }
     ExPlayerProfile Profile { get; set; }
-    void OnBind();
-    //void OnUnBind();
+    void OnBind(bool binded);
 }
 public abstract class fProfile
 {
@@ -70,11 +69,11 @@ public abstract class fProfile
             };
         }
         EnableInput(true);
-        BoundObject.OnBind();
+        BoundObject.OnBind(true);
         _ResetActions += () =>
         {
             BoundObject.Profile = null;
-            //BoundObject.OnUnBind();
+            BoundObject.OnBind(false);
             BoundObject = null;
         };
     }
