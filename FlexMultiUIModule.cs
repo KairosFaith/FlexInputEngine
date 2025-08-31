@@ -20,6 +20,28 @@ public class FlexMultiUIModule : BaseInputModule
     Selectable _CurrentSelected;
     public void Navigate(Vector2 move)
     {
+        if(_CurrentSelected is Slider slider)
+            switch(slider.direction)
+            {
+                case Slider.Direction.LeftToRight:
+                case Slider.Direction.RightToLeft:
+                    //check if move is horizontal
+                    if(Mathf.Abs(move.x) > Mathf.Abs(move.y))
+                    {
+                        slider.OnMove(new AxisEventData(eventSystem) { moveDir = move.x > 0 ? MoveDirection.Right : MoveDirection.Left });
+                        return;
+                    }
+                    break;
+                case Slider.Direction.BottomToTop:
+                case Slider.Direction.TopToBottom:
+                    //check if move is vertical
+                    if(Mathf.Abs(move.y) > Mathf.Abs(move.x))
+                    {
+                        slider.OnMove(new AxisEventData(eventSystem) { moveDir = move.y > 0 ? MoveDirection.Up : MoveDirection.Down });
+                        return;
+                    }
+                    break;
+            }
         Selectable s = _CurrentSelected.FindSelectable(move);
         if(s != null)
             Select(s);
